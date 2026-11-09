@@ -111,7 +111,13 @@ pipeline {
             }
         }
 
-        // >>> [B-DEPLOY] (Parte B, paso B5): aquí va la etapa "Deploy"
+        stage('Deploy') {
+            when { expression { currentBuild.currentResult == 'SUCCESS' } }
+            steps {
+                // Despliega en el "entorno de prueba" (http://localhost:5000) y ejecuta una prueba de humo
+                sh 'bash scripts/deploy_test.sh'
+            }
+        }
     }
 
     post {
